@@ -16,14 +16,19 @@ stages:
   displayName: Build image
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build with Podman
     pool:
       name: Default
     steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
+    - checkout: self
+
+    - script: |
+        echo "Building with Podman..."
+        podman build -t my-web-app:$(tag) -f $(Build.SourcesDirectory)/Dockerfile .
+      displayName: Build image using Podman
+
+    # Optional: Run the image (for test or verification)
+    - script: |
+        echo "Running container with Podman..."
+        podman run -d -p 8080:80 my-web-app:$(tag)
+      displayName: Run image using Podman
