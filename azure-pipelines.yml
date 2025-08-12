@@ -27,7 +27,8 @@ stages:
 
     - script: |
         echo "Building with Podman..."
-        podman build -t my-web-app:$(tag) -f $(Build.SourcesDirectory)/Dockerfile .
+        cd $(Build.SourcesDirectory) # ensures tha that build context includes the index.html file 
+        podman build -t my-web-app:$(tag) -f Dockerfile .
       displayName: Build image using Podman
 
     # Optional: Run the image (for test or verification)
