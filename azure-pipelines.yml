@@ -36,3 +36,6 @@ stages:
         echo "Running container with Podman..."
         podman run -d -p 8080:80 my-web-app:$(tag)
       displayName: Run image using Podman
+
+    - script: cat $(Build.SourcesDirectory)/index.html
+      displayName: 'Show content of index.html'
